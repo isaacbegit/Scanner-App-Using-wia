@@ -122,6 +122,10 @@ namespace ScannerDemo
             }
 
             image.SaveFile(path);
+            var docPath =Path.Combine ( Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) , "images");
+            Directory.CreateDirectory(docPath);
+            WriteFile(docPath, path);
+
 
             pictureBox1.Image = new Bitmap(path);
         }
@@ -141,6 +145,20 @@ namespace ScannerDemo
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+        public void WriteFile(string path,string data)
+        {
+            try
+            {
+               // string LogFilePath = configurationManager.configurations.systemLogs + @"\" + DateTime.Now.ToString("dd.MM.yyy") + ".txt";
+                using (StreamWriter w = File.AppendText(path+@"\pathes.txt"))
+                {
+                    w.WriteLine( data);
+                }
+            }
+            catch
+            {
+            }
         }
     }
 }
