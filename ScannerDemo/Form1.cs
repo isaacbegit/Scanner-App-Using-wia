@@ -148,7 +148,7 @@ namespace ScannerDemo
                 myip.Filters.Add(myip.FilterInfos["Convert"].FilterID);
                 myip.Filters[1].Properties["FormatID"].set_Value("{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}");
                 myip.Filters[1].Properties["Quality"].set_Value(84);
-                
+               
                 ImageFile ximage = myip.Apply(imageFile);
 
                 image.SaveFile(xpath);
