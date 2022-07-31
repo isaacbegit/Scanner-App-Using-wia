@@ -26,7 +26,7 @@ namespace ScannerDemo
         /// Scan a image with PNG Format
         /// </summary>
         /// <returns></returns>
-        public ImageFile ScanPNG()
+        public ImageFile ScanPNG(int scanResolutionDPI=150)
         {
             // Connect to the device and instruct it to scan
             // Connect to the device
@@ -39,7 +39,7 @@ namespace ScannerDemo
 
             try
             {
-                AdjustScannerSettings(item, resolution, 0, 0, width_pixel, height_pixel, 0, 0, color_mode);
+                AdjustScannerSettings(item, scanResolutionDPI, 0, 0, width_pixel, height_pixel, 0, 0, color_mode);
 
                 object scanResult = dlg.ShowTransfer(item, WIA.FormatID.wiaFormatPNG, true);
 
@@ -78,7 +78,7 @@ namespace ScannerDemo
         /// Scan a image with JPEG Format
         /// </summary>
         /// <returns></returns>
-        public ImageFile ScanJPEG()
+        public ImageFile ScanJPEG(int scanResolutionDPI=150)
         {
             // Connect to the device and instruct it to scan
             // Connect to the device
@@ -91,7 +91,7 @@ namespace ScannerDemo
 
             try
             {
-                AdjustScannerSettings(item, resolution, 0, 0, width_pixel, height_pixel, 0, 0, color_mode);
+                AdjustScannerSettings(item, scanResolutionDPI, 0, 0, width_pixel, height_pixel, 0, 0, color_mode);
 
                 object scanResult = dlg.ShowTransfer(item, WIA.FormatID.wiaFormatJPEG, true);
 
@@ -132,7 +132,7 @@ namespace ScannerDemo
         /// Scan a image with TIFF Format
         /// </summary>
         /// <returns></returns>
-        public ImageFile ScanTIFF()
+        public ImageFile ScanTIFF(int scanResolutionDPI=150)
         {
             // Connect to the device and instruct it to scan
             // Connect to the device
@@ -145,7 +145,7 @@ namespace ScannerDemo
 
             try
             {
-                AdjustScannerSettings(item, resolution, 0, 0, width_pixel, height_pixel, 0, 0, color_mode);
+                AdjustScannerSettings(item, scanResolutionDPI, 0, 0, width_pixel, height_pixel, 0, 0, color_mode);
 
                 object scanResult = dlg.ShowTransfer(item, WIA.FormatID.wiaFormatTIFF, true);
 

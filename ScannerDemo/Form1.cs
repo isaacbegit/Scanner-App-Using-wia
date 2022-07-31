@@ -65,44 +65,14 @@ namespace ScannerDemo
             Console.WriteLine("Image succesfully scanned");
         }
 
-        private static void AdjustScannerSettings(IItem scannerItem, int scanResolutionDPI, int scanStartLeftPixel, int scanStartTopPixel, int scanWidthPixels, int scanHeightPixels, int brightnessPercents, int contrastPercents, int colorMode)
-        {
-            const string WIA_SCAN_COLOR_MODE = "6146";
-            const string WIA_HORIZONTAL_SCAN_RESOLUTION_DPI = "6147";
-            const string WIA_VERTICAL_SCAN_RESOLUTION_DPI = "6148";
-            const string WIA_HORIZONTAL_SCAN_START_PIXEL = "6149";
-            const string WIA_VERTICAL_SCAN_START_PIXEL = "6150";
-            const string WIA_HORIZONTAL_SCAN_SIZE_PIXELS = "6151";
-            const string WIA_VERTICAL_SCAN_SIZE_PIXELS = "6152";
-            const string WIA_SCAN_BRIGHTNESS_PERCENTS = "6154";
-            const string WIA_SCAN_CONTRAST_PERCENTS = "6155";
-            SetWIAProperty(scannerItem.Properties, "4104", 24);
-            SetWIAProperty(scannerItem.Properties, WIA_HORIZONTAL_SCAN_RESOLUTION_DPI, scanResolutionDPI);
-            SetWIAProperty(scannerItem.Properties, WIA_VERTICAL_SCAN_RESOLUTION_DPI, scanResolutionDPI);
-            SetWIAProperty(scannerItem.Properties, WIA_HORIZONTAL_SCAN_START_PIXEL, scanStartLeftPixel);
-            SetWIAProperty(scannerItem.Properties, WIA_VERTICAL_SCAN_START_PIXEL, scanStartTopPixel);
-            SetWIAProperty(scannerItem.Properties, WIA_HORIZONTAL_SCAN_SIZE_PIXELS, scanWidthPixels);
-            SetWIAProperty(scannerItem.Properties, WIA_VERTICAL_SCAN_SIZE_PIXELS, scanHeightPixels);
-            SetWIAProperty(scannerItem.Properties, WIA_SCAN_BRIGHTNESS_PERCENTS, brightnessPercents);
-            SetWIAProperty(scannerItem.Properties, WIA_SCAN_CONTRAST_PERCENTS, contrastPercents);
-            SetWIAProperty(scannerItem.Properties, WIA_SCAN_COLOR_MODE, colorMode);
-        }
-        private static void SetWIAProperty(IProperties properties, object propName, object propValue)
-        {
-            Property prop = properties.get_Item(ref propName);
-            prop.set_Value(ref propValue);
-        }
+      
         public void StartScanning()
         {
-
-            
             Scanner device = null;
-            DeviceInfo firstScannerAvailable = null;
 
             this.Invoke(new MethodInvoker(delegate ()
             {
-                //  device = listBox1.SelectedItem as Scanner;
-                firstScannerAvailable = listBox1.SelectedItem as DeviceInfo;
+                device = listBox1.SelectedItem as Scanner;
             }));
 
             if (device == null)
@@ -111,7 +81,8 @@ namespace ScannerDemo
                                 "Warning",
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
-            }else if(String.IsNullOrEmpty(textBox2.Text))
+            }
+            else if (String.IsNullOrEmpty(textBox2.Text))
             {
                 MessageBox.Show("Provide a filename",
                                 "Warning",
@@ -124,38 +95,7 @@ namespace ScannerDemo
 
             this.Invoke(new MethodInvoker(delegate ()
             {
-
-                int width_pixel = 3510;
-                int height_pixel = 5100;
-                int color_mode = 1;
-                // Add the following two lines 
-                int brightness = 500;
-                int contrast = -500;
-                int resolution = 300;
-                //  Change the 0, 0 to brightness, contrast in the next line.
-                var xdevice = firstScannerAvailable.Connect();
-                var scannerItem = xdevice.Items[1];
-                AdjustScannerSettings(scannerItem, resolution, 0, 0, width_pixel, height_pixel, brightness, contrast, color_mode);
-
-
-               var imageFile = (ImageFile)scannerItem.Transfer("{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}");
-
-                var pathbase = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Images");
-                string filebase = DateTime.Now.ToString("dd-MM-yyyy-hh-mm-ss-fffffff") + ".jpg";
-                var xpath = Path.Combine(pathbase, filebase);
-
-                WIA.ImageProcess myip = new WIA.ImageProcess();  // use to compress jpeg.
-                myip.Filters.Add(myip.FilterInfos["Convert"].FilterID);
-                myip.Filters[1].Properties["FormatID"].set_Value("{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}");
-                myip.Filters[1].Properties["Quality"].set_Value(84);
-               
-                ImageFile ximage = myip.Apply(imageFile);
-
-                image.SaveFile(xpath);
-
-
-
-              /*  switch (comboBox1.SelectedIndex)
+                switch (comboBox1.SelectedIndex)
                 {
                     case 0:
                         image = device.ScanPNG();
@@ -167,14 +107,12 @@ namespace ScannerDemo
                         break;
                     case 2:
                         image = device.ScanTIFF();
-                        
                         imageExtension = ".tiff";
                         break;
                 }
-              */
             }));
-            
-            
+
+
             // Save the image
             var path = Path.Combine(textBox1.Text, textBox2.Text + imageExtension);
 
@@ -184,7 +122,7 @@ namespace ScannerDemo
             }
 
             image.SaveFile(path);
-            
+
             pictureBox1.Image = new Bitmap(path);
         }
 
